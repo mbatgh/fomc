@@ -1,0 +1,5 @@
+n_xtalpdbs   1
+MDtimeout    300
+MCcycles     1000
+thrRMSD      0.05
+thrDLAT      1.0
