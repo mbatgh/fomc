@@ -2,19 +2,19 @@
 
 Classical molecular force fields for atomistic modeling via Molecular Mechanics/Dynamics
 or Monte Carlo approaches come with parameters that can be obtained in a number of ways.
-While parameters for intramolecular force field terms (bonds, angles, dihedrals) as well
+While parameters for intra-molecular force field terms (bonds, angles, dihedrals) as well
 as partial charges can be obtained from first principles, VdW interactions are
 often parameterized by empirical fitting to reproduce experimental data.
 fomc is a program that performs this type of optimization, but, different from
 most common approaches, the experimental quantities it uses for optimization
-are not interaction energies, sublimation energies, or the like, but crystal
-structures. fomc starts with a given set of Lennard Jones (LJ) parameters that can
+are not interaction energies, sublimation energies, or comparable phys-chem properties, but 
+crystal structures. fomc starts with a given set of Lennard Jones (LJ) parameters that can
 be taken from a general purpose force field like GAFF. It then performs a brief
 MD simulation of a sample of the crystal structure(s) (the empirical input data) using
 Gromacs as external process. After comparing the input structure (the ground truth) to
 the average structure from the MD simulation, one of the LJ parameters is modified
 randomly within certain boundaries, and the change is accepted (or not) based on a Monte
-Carlo criterion. The process is repeated for a given number of cycles or until convergence
+Carlo criterion. The process is repeated for a given number of cycles, or until convergence
 is reached.
 
 ## Features
@@ -22,23 +22,23 @@ is reached.
 - Takes the crystal structure of a small organic molecule, and an initial force field parameter set
 (provided in Gromacs topology format) as input, and adjusts the parameters so that the
 reproduction of the crystal at a given temperature is optimized.
-- The optimization algorithm is a straight forward Monte Carlo algorithm
-- Molecular Dynamics simulations in the NPT ensemble allow for an optimization of parameters to
-reproduce structural properties at a given temperature.
+- The optimization is done using a Monte Carlo algorithm with adjustable parameters.
+- Molecular Dynamics simulations in the NPT ensemble (performed using Gromacs as an external process) allow 
+for an optimization of parameters to reproduce structural properties at (a) given temperature(s).
 - A minimum of one crystal structure is required as input, but more than one can also be
 provided (e.g. different polymorphs), which should provide parameters with improved
 transferability.
-- The total number of parameters is limited using Lorentz Berthelot rules.
+- For efficiency, and in line with most existing classical FFs, the total number of parameters, and thus 
+the dimension of search space, are limited using Lorentz-Berthelot rules.
 
 ## Prerequisites
 
 fomc is a plain C code that requires only standard libraries, and should compile
-with gcc on most Linux distributions. For execution a working installation of Gromacs
-(any version newer than 2016 should work) is required. Other than that, for the generation
-and manipulation of topologies and input structures, a number of external tools can be
-helpful, and are listed below.
+with gcc on most Linux distributions. For execution a working installation of [Gromacs](http://www.gromacs.org)
+(any version, 2016 or newer, should work) is required, and the Gromacs binaries need to be in your PATH . 
+Other than that, for the generation and manipulation of topologies and input structures, a number of 
+external tools can be helpful, and are listed below.
 
-- [Gromacs](http://www.gromacs.org/)
 - [openbabel](http://openbabel.org/)
 - [acpype](https://github.com/alanwilter/acpype)
 - [Ambertools](http://ambermd.org/AmberTools.php)
@@ -61,7 +61,6 @@ should generate a binary called fomc in the bin folder in your home directory.
 fomc is executed on the command line. Various settings can be controlled in a parameter input file,
 or with command line parameters. For a concise overview consider the output of the command fomc -h,
 as shown below.
-
 
 ```
 fomc -h
@@ -87,7 +86,7 @@ usage: fomc [command-line parameters]
 ```
 
 For more details on the generation of input files, their syntax, and the overall workflow, see the 
-example provided [here](examples/README.md)
+example provided [here](examples/README.md).
 
 ## Contact
 
